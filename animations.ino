@@ -1,8 +1,9 @@
 /* ANIMATION SETTINGS */
-#define COLOR_OK     0x00FF00
-#define COLOR_ERROR  0xFF0000
-#define COLOR_WAIT   0xFF
-#define COLOR_TOUCH  0xFFFF44
+#define COLOR_OK        0x00FF00
+#define COLOR_ERROR     0xFF0000
+#define COLOR_WAIT      0xFF
+#define COLOR_TOUCH     0xFFFF44
+#define COLOR_PROG_RUN  0xFF00FF // purple
 
 #define STARTUP_TURNS 10
 #define BRIGHTNESS  200

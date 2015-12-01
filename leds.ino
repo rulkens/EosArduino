@@ -1,13 +1,12 @@
 /* LED SETTINGS */
-#define LED_PIN       4
-//#define CLOCK_PIN   5
 #define DATA_PIN      6
-//#define COLOR_ORDER GRB
-#define CHIPSET     NEOPIXEL
-#define NUM_LEDS    12
+#define CHIPSET       NEOPIXEL
+#define NUM_LEDS      12
 
 // blends the ok color 
-#define COLOR_OK_BLEND_SPEED 10
+#define COLOR_OK_BLEND_SPEED       10
+#define COLOR_ERROR_BLEND_SPEED    7
+#define COLOR_PROG_RUN_BLEND_SPEED 10
 
 #define FRAMES_PER_SECOND 100
 
@@ -26,12 +25,17 @@ void loopLeds(){
   switch(state){
     case STATE_OK:
       // blend to color
-      for(uint16_t i = 0; i < NUM_LEDS; i++) {
-        // nice smooth transition
-        // TODO: make this configurable
-        leds[i] = blend(leds[i], COLOR_OK, COLOR_OK_BLEND_SPEED);
-        //leds[i] = c_ok;
-      }
+      // nice smooth transition
+      blendLeds(COLOR_OK, COLOR_OK_BLEND_SPEED);
+      // TODO: make this configurable
+      break;
+      
+    case STATE_ERROR:
+      blendLeds(COLOR_ERROR, COLOR_ERROR_BLEND_SPEED);
+      break;
+      
+    case STATE_PROG_RUN:
+      blendLeds(COLOR_PROG_RUN, COLOR_PROG_RUN_BLEND_SPEED);
       break;
   }
   
@@ -54,10 +58,16 @@ void loopLeds(){
         break;
       case STATE_ERROR:
         log("LED response to ERROR");
-        color(COLOR_ERROR);
+        //color(COLOR_ERROR);
     }
   }
   
   FastLED.show(); // display this frame
   FastLED.delay(1000 / FRAMES_PER_SECOND);
+}
+
+void blendLeds(CRGB to_color, int amount){
+  for(uint16_t i = 0; i < NUM_LEDS; i++) {
+    leds[i] = blend(leds[i], to_color, amount);
+  }
 }

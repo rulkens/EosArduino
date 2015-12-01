@@ -21,6 +21,7 @@ Written by Alexander Rulkens
 #define STATE_OK       2 //"ok"
 #define STATE_TOUCH    3 //"touch"
 #define STATE_ERROR    4 // "error"
+#define STATE_PROG_RUN 5 // "progRun" - running a program
 
 /* GLOBALS */
 CRGB leds[NUM_LEDS];
