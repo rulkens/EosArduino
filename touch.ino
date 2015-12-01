@@ -11,7 +11,6 @@
 
 /* TOUCH EVENTS */
 #define EVENT_TOUCH        "touch"
-#define EVENT_TOUCH_LONG   "touchlong"
 #define EVENT_TAP          "tap"
 #define EVENT_DOUBLE_TAP   "doubletap"
 
