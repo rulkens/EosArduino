@@ -5,10 +5,11 @@
 #define COLOR_TOUCH             0xFFFF44 // some kind of purple
 #define COLOR_PROG_RUN          0xFF00FF // purple
 #define COLOR_LONG_TOUCH        0x00FFFF // yellow
+#define COLOR_XLONG_TOUCH       0x111111 // black
 
 #define STARTUP_TURNS           10
 #define BRIGHTNESS              200
-#define STARTUP_ANIMATION_DELAY 30
+#define STARTUP_ANIMATION_DELAY 20
 
 #define NUM_LEDS    12
 

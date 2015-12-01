@@ -57,6 +57,8 @@ void parseMessage(){
     case MESSAGE_SET_COLOR:
       log("[S] setting color for OK state");
       c_ok = hex2int(arg1.c_str(), arg1.length());
+      log("c_ok");
+      log(c_ok);
       break;
   }
 }
@@ -77,6 +79,7 @@ void log(long number){
 }
 
 // strangely enough, this matches the String text event
+// so when we add this, events with normal String values will not get fired....
 //void log(boolean b){
 //  Serial.print("# ");
 //  Serial.println(b ? "true" : "false");

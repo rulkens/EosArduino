@@ -7,6 +7,7 @@
 #define STATE_TOUCH_ON     1
 #define STATE_TOUCH_OFF    0
 #define STATE_TOUCH_LONG   2
+#define STATE_TOUCH_XLONG  3
 
 /* TOUCH EVENTS */
 #define EVENT_TOUCH        "touch"
@@ -15,6 +16,7 @@
 #define EVENT_DOUBLE_TAP   "doubletap"
 
 #define TOUCH_LONG_TIME    1200 // the time in ms before a touch is registered as long
+#define TOUCH_XLONG_TIME   4000 // the time in ms before a touch is registered as extra long
 #define DOUBLE_TAP_TIME    600 // the interval between two taps, lower than this is registered as a double tap
 
 int touch_state;
@@ -64,10 +66,19 @@ void loopTouch() {
     ms_touching = millis() - touch_start_ms;
     //log(ms_touching);
     
-    if (ms_touching > TOUCH_LONG_TIME && touch_state != STATE_TOUCH_LONG){
+    if (ms_touching > TOUCH_LONG_TIME && ms_touching <= TOUCH_XLONG_TIME && touch_state != STATE_TOUCH_LONG){
       // getting into the long touch state
       // fire an event
       touch_state = STATE_TOUCH_LONG;
+      setState(STATE_TOUCH_LONG);
+      event(EVENT_TOUCH, touch_state);
+    }
+    
+    if (ms_touching > TOUCH_XLONG_TIME && touch_state != STATE_TOUCH_XLONG){
+      // getting into the long touch state
+      // fire an event
+      touch_state = STATE_TOUCH_XLONG;
+      setState(STATE_TOUCH_XLONG);
       event(EVENT_TOUCH, touch_state);
     }
     

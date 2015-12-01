@@ -1,14 +1,15 @@
 /* LED SETTINGS */
-#define DATA_PIN                     6
-#define CHIPSET                      NEOPIXEL
-#define NUM_LEDS                     12
+#define DATA_PIN                      6
+#define CHIPSET                       NEOPIXEL
+#define NUM_LEDS                      12
 
 /* BLENDING SETTINGS */
 // blends the ok color 
-#define COLOR_OK_BLEND_SPEED         10
-#define COLOR_ERROR_BLEND_SPEED      7
-#define COLOR_PROG_RUN_BLEND_SPEED   10
-#define COLOR_LONG_TOUCH_BLEND_SPEED 3
+#define COLOR_OK_BLEND_SPEED          10
+#define COLOR_ERROR_BLEND_SPEED       7
+#define COLOR_PROG_RUN_BLEND_SPEED    10
+#define COLOR_LONG_TOUCH_BLEND_SPEED  3
+#define COLOR_XLONG_TOUCH_BLEND_SPEED 2
 
 #define FRAMES_PER_SECOND 100
 
@@ -44,6 +45,12 @@ void loopLeds(){
     case STATE_TOUCH:
       // blend to long tap
       blendLeds(COLOR_LONG_TOUCH, COLOR_LONG_TOUCH_BLEND_SPEED);
+      break;
+      
+    case STATE_TOUCH_LONG:
+      // blend to xtra long tap
+      blendLeds(COLOR_XLONG_TOUCH, COLOR_XLONG_TOUCH_BLEND_SPEED);
+      break;
   }
   
   

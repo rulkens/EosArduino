@@ -16,12 +16,15 @@ Written by Alexander Rulkens
 #define NUM_LEDS    12
 
 /* STATES */
-#define STATE_SETUP    0 //"setup"
-#define STATE_STARTUP  1 //"startup"
-#define STATE_OK       2 //"ok"
-#define STATE_TOUCH    3 //"touch"
-#define STATE_ERROR    4 // "error"
-#define STATE_PROG_RUN 5 // "progRun" - running a program
+#define STATE_SETUP      0 // "setup"
+#define STATE_STARTUP    1 // "startup"
+#define STATE_OK         2 // "ok"
+#define STATE_ERROR      3 // "error"
+#define STATE_PROG_RUN   4 // "progRun" - running a program
+
+#define STATE_TOUCH      10 // "touch"
+#define STATE_TOUCH_LONG 11 // "longtouch"
+#define STATE_TOUCH_XLONG 12 // "xlongtouch"
 
 /* GLOBALS */
 CRGB leds[NUM_LEDS];
