@@ -1,17 +1,18 @@
 /* CAPACITIVE TOUCH SETTINGS */
 // Reset Pin is used for I2C or SPI
-#define CAP1188_RESET  9
-#define CAP_I2C_PORT 0x29
+#define CAP1188_RESET      9
+#define CAP_I2C_PORT       0x29
 
 /* TOUCH STATES */
-#define STATE_TOUCH_ON 1
-#define STATE_TOUCH_OFF 0
+#define STATE_TOUCH_ON     1
+#define STATE_TOUCH_OFF    0
 
 /* TOUCH EVENTS */
-#define EVENT_TOUCH "touch"
+#define EVENT_TOUCH        "touch"
 
 int touch_state;
 int state_before_touch;
+int ms_touching;           // the amount of ms we are touching
 
 Adafruit_CAP1188 cap;
 
@@ -48,6 +49,7 @@ void loopTouch() {
     return;
   } else {
   // we have touch down!
+  
     if(touch_state != STATE_TOUCH_ON){
       touch_state = STATE_TOUCH_ON;
       event(EVENT_TOUCH, STATE_TOUCH_ON);
