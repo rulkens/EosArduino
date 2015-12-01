@@ -92,20 +92,23 @@ void log(long number){
 /**
 several overloading versions of the event function which sends and event string down the wire.
 **/
+void event(String type){
+  Serial.print("event ");
+  Serial.println(type);
+}
+
 void event(String type, String value){
   Serial.print("event ");
   Serial.print(type);
   Serial.print(" ");
-  Serial.print(value);
-  Serial.println();
+  Serial.println(value);
 }
 
 void event(String type, int value){
   Serial.print("event ");
   Serial.print(type);
   Serial.print(" ");
-  Serial.print(String(value));
-  Serial.println();
+  Serial.println(String(value));
 }
 
 void event(String type, int v1, int v2){
@@ -114,8 +117,7 @@ void event(String type, int v1, int v2){
   Serial.print(" ");
   Serial.print(String(v1));
   Serial.print(" ");
-  Serial.print(String(v2));
-  Serial.println();
+  Serial.println(String(v2));
 }
 
 /**
