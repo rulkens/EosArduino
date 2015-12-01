@@ -1,7 +1,7 @@
 /* ANIMATION SETTINGS */
-#define COLOR_OK                0x00FF00
+#define COLOR_OK                0x009900
 #define COLOR_ERROR             0xFF0000
-#define COLOR_WAIT              0x0000FF // blue
+#define COLOR_WAIT              0x0000BB // blue
 #define COLOR_TOUCH             0xFFFF44 // some kind of purple
 #define COLOR_PROG_RUN          0xFF00FF // purple
 #define COLOR_LONG_TOUCH        0x00FFFF // yellow
