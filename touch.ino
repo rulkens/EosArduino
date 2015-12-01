@@ -4,10 +4,10 @@
 #define CAP_I2C_PORT       0x29
 
 /* TOUCH STATES */
-#define STATE_TOUCH_ON     1
-#define STATE_TOUCH_OFF    0
-#define STATE_TOUCH_LONG   2
-#define STATE_TOUCH_XLONG  3
+#define S_TOUCH_ON     1
+#define S_TOUCH_OFF    0
+#define S_TOUCH_LONG   2
+#define S_TOUCH_XLONG  3
 
 /* TOUCH EVENTS */
 #define EVENT_TOUCH        "touch"
@@ -53,9 +53,9 @@ void loopTouch() {
 
   if (touched != 0) {
     // we have a touch!
-    if(touch_state == STATE_TOUCH_OFF){
-      touch_state = STATE_TOUCH_ON;
-      event(EVENT_TOUCH, STATE_TOUCH_ON);
+    if(touch_state == S_TOUCH_OFF){
+      touch_state = S_TOUCH_ON;
+      event(EVENT_TOUCH, S_TOUCH_ON);
       // record the old state so we can get back to it
       state_before_touch = getState();
       touch_start_ms = millis();
@@ -66,18 +66,18 @@ void loopTouch() {
     ms_touching = millis() - touch_start_ms;
     //log(ms_touching);
     
-    if (ms_touching > TOUCH_LONG_TIME && ms_touching <= TOUCH_XLONG_TIME && touch_state != STATE_TOUCH_LONG){
+    if (ms_touching > TOUCH_LONG_TIME && ms_touching <= TOUCH_XLONG_TIME && touch_state != S_TOUCH_LONG){
       // getting into the long touch state
       // fire an event
-      touch_state = STATE_TOUCH_LONG;
+      touch_state = S_TOUCH_LONG;
       setState(STATE_TOUCH_LONG);
       event(EVENT_TOUCH, touch_state);
     }
     
-    if (ms_touching > TOUCH_XLONG_TIME && touch_state != STATE_TOUCH_XLONG){
+    if (ms_touching > TOUCH_XLONG_TIME && touch_state != S_TOUCH_XLONG){
       // getting into the long touch state
       // fire an event
-      touch_state = STATE_TOUCH_XLONG;
+      touch_state = S_TOUCH_XLONG;
       setState(STATE_TOUCH_XLONG);
       event(EVENT_TOUCH, touch_state);
     }
@@ -99,16 +99,16 @@ void loopTouch() {
     
   } else {
     // no touch detected
-    if(touch_state != STATE_TOUCH_OFF){
+    if(touch_state != S_TOUCH_OFF){
       // switch state and show it!
       
-      touch_state = STATE_TOUCH_OFF;
+      touch_state = S_TOUCH_OFF;
       last_touched = millis();
       event(EVENT_TOUCH, touch_state);
       // fire a tap event with the length in ms
       event(EVENT_TAP, millis() - last_touched);
       
-      // TODO: move this somewhere else
+      // set the state to what it was before touching started
       setState(state_before_touch);
       
       // update the moment it's last touched
