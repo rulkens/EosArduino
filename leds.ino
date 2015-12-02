@@ -1,6 +1,8 @@
 
 #define FRAMES_PER_SECOND               150
 
+int breathe_timer = 0;
+
 void initLeds() {
   FastLED.addLeds<CHIPSET, DATA_PIN>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
   FastLED.setBrightness( BRIGHTNESS );
@@ -16,6 +18,7 @@ void loopLeds(){
   
   // only apply the normal animations and states when not touching
   if(touch_state == 0){
+    breathe_timer++;
     animateState();
     applyState();
   }
@@ -29,6 +32,10 @@ void applyTouchState(){
   
   // immediate actions first
   if(touchStateHasChanged){
+    // reset breathe timer
+    breathe_timer = 0;
+    FastLED.setBrightness(255);
+    
     switch(touch_state){
       case S_TOUCH_ON:
         // set color directly
@@ -59,6 +66,13 @@ void animateState(){
       // blend to color
       // nice smooth transition
       blendLeds(COLOR_OK, COLOR_OK_BLEND_SPEED);
+
+      // breathing animation
+      if(breathe_timer > 600) {
+        // calculate brightness
+        int brightness = constrain(int(175.0 + 80.0 * sin((double(breathe_timer) / 1800.0) * 2.0 * PI)), 0, 255);
+        FastLED.setBrightness(brightness);
+      }
       // TODO: make this configurable
       break;
       
@@ -78,8 +92,9 @@ void animateState(){
 
 void applyState(){
   if(stateHasChanged){
-    //log("stateHasChanged");
-    //log(stateHasChanged ? "true" : "false");
+    // reset breathe timer
+    breathe_timer = 0;
+    FastLED.setBrightness(255);
     // do something with the state
     switch(state){
       case STATE_STARTUP:

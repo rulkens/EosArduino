@@ -9,7 +9,7 @@
 #define EVENT_DOUBLE_TAP   "doubletap"
 
 #define TOUCH_LONG_TIME    1200 // the time in ms before a touch is registered as long
-#define TOUCH_XLONG_TIME   4000 // the time in ms before a touch is registered as extra long
+#define TOUCH_XLONG_TIME   2300 // the time in ms before a touch is registered as extra long
 #define DOUBLE_TAP_TIME    600 // the interval between two taps, lower than this is registered as a double tap
 
 #define TAP_TIME           300 // everything shorter than 300 ms is considered a tap

@@ -5,6 +5,8 @@
 
 /* BLENDING SETTINGS */
 #define COLOR_OK_BLEND_SPEED            10
+#define COLOR_OK_BREATHE_SPEED          5
+
 #define COLOR_ERROR_BLEND_SPEED         7
 #define COLOR_PROG_RUN_BLEND_SPEED      10
 #define COLOR_STANDBY_BLEND_SPEED       1
@@ -12,7 +14,8 @@
 #define COLOR_XLONG_TOUCH_BLEND_SPEED   2
 
 /* COLORS */
-#define COLOR_OK                0x009900
+#define COLOR_OK                0x006644
+
 #define COLOR_ERROR             0xFF0000
 #define COLOR_STANDBY           0x101010
 #define COLOR_WAIT              0x0000BB // blue
@@ -20,3 +23,5 @@
 #define COLOR_PROG_RUN          0xFF00FF // purple
 #define COLOR_LONG_TOUCH        0x00FFFF // yellow
 #define COLOR_XLONG_TOUCH       0x111111 // very dark grey
+
+
