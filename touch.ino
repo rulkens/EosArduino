@@ -1,28 +1,8 @@
-/* CAPACITIVE TOUCH SETTINGS */
-// Reset Pin is used for I2C or SPI
-#define CAP1188_RESET      9
-#define CAP_I2C_PORT       0x29
 
-/* TOUCH STATES */
-#define S_TOUCH_ON     1
-#define S_TOUCH_OFF    0
-#define S_TOUCH_LONG   2
-#define S_TOUCH_XLONG  3
-
-/* TOUCH EVENTS */
-#define EVENT_TOUCH        "touch"
-#define EVENT_TAP          "tap"
-#define EVENT_DOUBLE_TAP   "doubletap"
-
-#define TOUCH_LONG_TIME    1200 // the time in ms before a touch is registered as long
-#define TOUCH_XLONG_TIME   4000 // the time in ms before a touch is registered as extra long
-#define DOUBLE_TAP_TIME    600 // the interval between two taps, lower than this is registered as a double tap
-
-int touch_state;
-int state_before_touch;
+int touch_state_old;       // previous touch state
 int ms_touching;           // the amount of ms we are touching
 int touch_start_ms;
-int time_since_touched; // the amount of time since the last touch
+int time_since_touched;    // the amount of time since the last touch
 int last_touched;          // the time in ms when last touched
 boolean hasDoubleTapped;   // if the state is already double tapped
 Adafruit_CAP1188 cap;
@@ -38,7 +18,7 @@ void initTouch() {
     // hang??
     while(1);
   }
-  
+
   touch_state = 0;
   touch_start_ms = millis();
   hasDoubleTapped = false;
@@ -52,33 +32,24 @@ void loopTouch() {
 
   if (touched != 0) {
     // we have a touch!
+    
     if(touch_state == S_TOUCH_OFF){
-      touch_state = S_TOUCH_ON;
-      event(EVENT_TOUCH, S_TOUCH_ON);
       // record the old state so we can get back to it
-      state_before_touch = getState();
       touch_start_ms = millis();
-      setState(STATE_TOUCH);
     }
     
     // set the millis since we began
     ms_touching = millis() - touch_start_ms;
-    //log(ms_touching);
     
-    if (ms_touching > TOUCH_LONG_TIME && ms_touching <= TOUCH_XLONG_TIME && touch_state != S_TOUCH_LONG){
+    // set the three different touch state dependent on the time
+    if (ms_touching <= TOUCH_LONG_TIME){
+      setTouchState(S_TOUCH_ON);
+    } else if (ms_touching > TOUCH_LONG_TIME && ms_touching <= TOUCH_XLONG_TIME){
       // getting into the long touch state
-      // fire an event
-      touch_state = S_TOUCH_LONG;
-      setState(STATE_TOUCH_LONG);
-      event(EVENT_TOUCH, touch_state);
-    }
-    
-    if (ms_touching > TOUCH_XLONG_TIME && touch_state != S_TOUCH_XLONG){
-      // getting into the long touch state
-      // fire an event
-      touch_state = S_TOUCH_XLONG;
-      setState(STATE_TOUCH_XLONG);
-      event(EVENT_TOUCH, touch_state);
+      setTouchState(S_TOUCH_LONG);
+    } else if (ms_touching > TOUCH_XLONG_TIME){
+      // getting into the extra long touch state
+      setTouchState(S_TOUCH_XLONG);
     }
     
     time_since_touched = millis() - last_touched;
@@ -101,14 +72,12 @@ void loopTouch() {
     if(touch_state != S_TOUCH_OFF){
       // switch state and show it!
       
-      touch_state = S_TOUCH_OFF;
-      last_touched = millis();
-      event(EVENT_TOUCH, touch_state);
-      // fire a tap event with the length in ms
-      event(EVENT_TAP, millis() - last_touched);
+      setTouchState(S_TOUCH_OFF);
       
-      // set the state to what it was before touching started
-      setState(state_before_touch);
+      if(ms_touching < TAP_TIME){
+        // fire a tap event
+        event(EVENT_TAP, ms_touching);
+      }
       
       // update the moment it's last touched
       last_touched = millis();
@@ -116,3 +85,20 @@ void loopTouch() {
   }
 }
 
+/**
+gets executed at the end of the loop, make sure to set any dirty flags to false
+**/
+void endLoopTouch() {
+  touchStateHasChanged = false;
+}
+
+/**
+sets the touch state and fire off an event to inform people the universe has changed
+**/
+void setTouchState(int state){
+  if(state == touch_state) return;
+  event(EVENT_TOUCH, touch_state, touch_state_old);
+  touch_state_old = touch_state;
+  touch_state = state;
+  touchStateHasChanged = true;
+}

@@ -1,30 +1,22 @@
 
 /*************************************************** 
 
-The main Arduino controller with FastLed support
+ The main Arduino controller with FastLED support
 
-- uses the 12 pixel NeoPixel circle
-- the CAP1188 I2C/SPI 8-chan Capacitive Sensor
+ - uses the 12 pixel NeoPixel circle
+ - the CAP1188 I2C/SPI 8-chan Capacitive Sensor
 
-Written by Alexander Rulkens
+ Written by Alexander Rulkens
  ****************************************************/
 #include <FastLED.h>
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_CAP1188.h>
+#include "touch.h"
+#include "state.h"
+#include "leds.h"
 
 #define NUM_LEDS    12
-
-/* STATES */
-#define STATE_SETUP      0 // "setup"
-#define STATE_STARTUP    1 // "startup"
-#define STATE_OK         2 // "ok"
-#define STATE_ERROR      3 // "error"
-#define STATE_PROG_RUN   4 // "progRun" - running a program
-
-#define STATE_TOUCH      10 // "touch"
-#define STATE_TOUCH_LONG 11 // "longtouch"
-#define STATE_TOUCH_XLONG 12 // "xlongtouch"
 
 /* GLOBALS */
 CRGB leds[NUM_LEDS];
@@ -32,9 +24,17 @@ CRGB leds[NUM_LEDS];
 // OK color
 CRGB c_ok = CRGB(0,255,0);
 
+/** 
+the main application state
+*/
 int state;
+boolean touchStateHasChanged = false;
+/**
+the main touch state. can be one of the touch states
+*/
+int touch_state;
 boolean stateHasChanged = false;
-int breatheTimeout = 0;
+
 
 void setup() {
   
@@ -60,10 +60,15 @@ void loop(){
   // Add entropy to random number generator; we use a lot of it.
   random16_add_entropy(random());
   
+  // INPUT
   loopTouch();
   loopSerial();
   
-  // TODO: do some state machine magic here
+  // OUTPUT
   loopLeds();
   loopState();
+  
+  // cleaning up
+  endLoopState();
+  endLoopTouch();
 }

@@ -49,7 +49,7 @@ void parseMessage(){
   
   switch(message){
     case MESSAGE_SET_STATE:
-      // TODO get state
+      // setting the application state
       log("[S] setting state");
       log(arg1.toInt());
       setState(arg1.toInt());

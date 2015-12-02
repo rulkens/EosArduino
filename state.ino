@@ -4,6 +4,7 @@
 int state_old;
 
 void setState(int s){
+  if(s == state) return;
   event(EVENT_STATE_CHANGE, s, state_old);
   state_old = state;
   state = s;
@@ -16,10 +17,10 @@ int getState() {
 
 void loopState(){
   if(!stateHasChanged){
-    breatheTimeout++;
+    //breatheTimeout++;
   }
-  // reset the old state
-  state_old = state;
+}
+
+void endLoopState(){
   stateHasChanged = false;
-  
 }
