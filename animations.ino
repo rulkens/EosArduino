@@ -1,6 +1,6 @@
 
 #define STARTUP_TURNS           10
-#define BRIGHTNESS              200
+#define BRIGHTNESS              255
 #define STARTUP_ANIMATION_DELAY 20
 
 #define NUM_LEDS    12
