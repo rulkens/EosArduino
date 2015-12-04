@@ -1,5 +1,5 @@
 
-#define FRAMES_PER_SECOND               150
+#define FRAMES_PER_SECOND               100
 
 int breathe_timer = 0;
 
